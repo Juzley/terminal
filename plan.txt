@@ -1,0 +1,43 @@
+Hacking based game.
+
+Resources:
+  Money
+  Zombies - can allocate to do different tasks.
+  Viruses (generate money?)
+  Passwords/Info (trade for stuff?)
+  Electricity bill?
+  PC: CPU, Memory, HD, Bandwith, Security (firewall?), different software
+  Specialists: Software guy (like ADR builder, makes new software). Social
+  engineer (get passwords, disable security).
+  Software:
+    Port scanner (find new servers).
+
+Gameplay:
+Find different services to hack
+Different types of service yield different bits of info:
+    Money
+    New servers
+    Access to perks?
+    Story progression?
+Two groups of services:
+    Company services: lots of different ones to hack, have to hack them in
+    order, eg find password off one to log into another, disable firewall to 
+    get access to more.
+    Individual services: just individual stuff to hack for money etc.
+Email:
+    New stuff, perks etc. come in via email.
+Hacking: Different types of hacking 'puzzle' depending on the type of server.
+
+Design:
+Server class:
+    Various info about the types of server.
+    What company it is part of.
+    What is unlocked by hacking it.
+List of servers, companies etc. pre-generated at the start of the game.
+Screen modules, representing the different screens.
+Game module, controls everything. Contains:
+    PC specs
+    Resource info
+    Server list
+    Visible server list
+
