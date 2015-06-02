@@ -1,8 +1,12 @@
 var GameState = {
     init: function() {
         this.money = 100;
+        this.cpu_level = 1;
+        this.ram_level = 1;
         this.emails = [];
         this.servers = [];
+        this.has_social_engineer = false;
+        this.has_developer = false;
 
         // Set up some dummy data.
         addServer = function() {

@@ -10,17 +10,21 @@ var Terminal = {
     },
 
     refresh: function() {
-        $('#money').text(GameState.money);
+        $('#money').text("$" + GameState.money);
 
+        $('#emails').empty();
+        $('<h1>').text('Email').appendTo('#emails');
         for (var i = 0; i < GameState.emails.length; i++) {
             email = GameState.emails[i];
             $('<div>')
                 .addClass('email')
-                .text(email.subject)
+                .text(email.subject + "-" + email.body)
                 .click(email.onRead)
                 .appendTo('#emails');
         }
 
+        $('#servers').empty();
+        $('<h1>').text('Servers').appendTo('#servers');
         for (var i = 0; i < GameState.servers.length; i++) {
             server = GameState.servers[i];
             $('<div>')

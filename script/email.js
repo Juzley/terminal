@@ -1,11 +1,15 @@
-function Email(subject, text, onRead) {
+function Email(subject, body, onRead) {
     this.subject = subject || "";
-    this.text = text || "";
+    this.body = body || "";
     this.read = false;
 
     self = this;
     this.onRead = function() {
-        self.read = true;
-        if (onRead) { onRead(); }
+        if (!self.read) {
+            self.read = true;
+            if (onRead) {
+                onRead();
+            }
+        }
     }
 };
