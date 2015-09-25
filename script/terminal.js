@@ -27,10 +27,18 @@ var Terminal = {
         $('<h1>').text('Servers').appendTo('#servers');
         for (var i = 0; i < GameState.servers.length; i++) {
             server = GameState.servers[i];
-            $('<div>')
-                .addClass('server')
-                .text(server.hostname)
-                .appendTo('#servers');
+            if (server instanceof ServerGroup) {
+                $('<div>')
+                    .addClass('servergroup')
+                    .text(server.name)
+                    .appendTo('#servers');
+            } else {
+                $('<div>')
+                    .addClass('server')
+                    .text(server.name)
+                    .click(server.onAccess)
+                    .appendTo('#servers');
+            }
         }
     }
 };
