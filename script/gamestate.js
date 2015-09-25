@@ -10,15 +10,20 @@ var GameState = {
 
         // Set up some dummy data.
         addServer = function() {
-            GameState.servers.push(new Server("Test Server"));
-            Terminal.refresh();
+            var server = new Server("Test Server");
+            GameState.servers.push(server);
+            Render.addServer(server);
         }
-        this.emails.push(new Email("Test", "Test", addServer));
-        this.emails.push(new Email("Test2", "Test2"));
+        var email = new Email("Test", "Test", addServer);
+        this.emails.push(email);
+        Render.addEmail(email);
+
+        email = new Email("Test2", "Test2");
+        this.emails.push(email);
+        Render.addEmail(email);
     },
 
     update: function() {
         this.money += 100;
-        Terminal.refresh();
     }
 };
