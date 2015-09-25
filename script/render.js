@@ -24,5 +24,24 @@ var Render = {
             .text(server.name)
             .click(server.onAccess)
             .appendTo('#servers');
+    },
+
+    toggleServerGroup: function(group) {
+        
+    }
+
+    addServerGroup: function(group) {
+        groupDiv = $('<div>')
+                        .addClass('servergroup')
+                        .text(group.name)
+                        .appendTo('#servers');
+        for (var i = 0; i < group.servers.length; i++) {
+            server = group.servers[i];
+            $('<div>')
+                .addClass('server')
+                .text(server.name)
+                .click(server.onAccess)
+                .appendTo(groupDiv);
+        }
     }
 };

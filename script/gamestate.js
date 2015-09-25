@@ -18,7 +18,14 @@ var GameState = {
         this.emails.push(email);
         Render.addEmail(email);
 
-        email = new Email("Test2", "Test2");
+        addGroup = function() {
+            var firewall = new Server("Firewall", true, false, null);
+            var server = new Server("Main Server", false, false, firewall);
+            var group = new ServerGroup("Test Server Group", [firewall, server]);
+            GameState.servers.push(group);
+            Render.addServerGroup(group);
+        }
+        email = new Email("Test2", "Test2", addGroup);
         this.emails.push(email);
         Render.addEmail(email);
     },
