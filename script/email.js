@@ -3,7 +3,7 @@ function Email(subject, body, onRead) {
     this.body = body || "";
     this.read = false;
 
-    self = this;
+    var self = this;
     this.onRead = function() {
         if (!self.read) {
             self.read = true;

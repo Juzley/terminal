@@ -11,11 +11,27 @@ var Render = {
     },
 
     addEmail: function(email) {
-        $('<div>')
+        var emailDiv = $('<div>')
             .addClass('email')
-            .text(email.subject + "-" + email.body)
-            .click(email.onRead)
             .appendTo('#emails');
+
+        var onClick = function() {
+            email.onRead();
+            $('.emailbody', emailDiv).toggle();
+            $('.emailsubject', emailDiv).removeClass('unread')
+        }
+
+        $('<div>')
+            .addClass('emailsubject')
+            .addClass('unread')
+            .text(email.subject)
+            .click(onClick)
+            .appendTo(emailDiv);
+        $('<div>')
+            .addClass('emailbody')
+            .text(email.body)
+            .attr('hidden', true)
+            .appendTo(emailDiv);
     },
 
     addServer: function(server) {
@@ -26,22 +42,29 @@ var Render = {
             .appendTo('#servers');
     },
 
-    toggleServerGroup: function(group) {
-        
-    }
-
     addServerGroup: function(group) {
-        groupDiv = $('<div>')
+        var toggleVis = function () {
+            $('#' + group.name + ' div.servers').toggle();
+        }
+
+        var groupDiv = $('<div>')
                         .addClass('servergroup')
+                        .attr('id', group.name)
                         .text(group.name)
+                        .click(toggleVis)
                         .appendTo('#servers');
+        var serversDiv = $('<div>')
+                        .addClass('servers')
+                        .attr('hidden', true)
+                        .appendTo(groupDiv);
+        
         for (var i = 0; i < group.servers.length; i++) {
-            server = group.servers[i];
+            var server = group.servers[i];
             $('<div>')
                 .addClass('server')
                 .text(server.name)
                 .click(server.onAccess)
-                .appendTo(groupDiv);
+                .appendTo(serversDiv);
         }
     }
 };

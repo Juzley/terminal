@@ -6,7 +6,7 @@ function Server(name, requires_hack, requires_password, firewall) {
     this.password_known = false;
     this.firewall = firewall || null;
 
-    self = this;
+    var self = this;
     this.onAccess = function() {
         if (self.accessed) {
             return;
