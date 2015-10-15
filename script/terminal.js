@@ -1,10 +1,11 @@
-var Terminal = {
-    init: function() {
-        Render.init();
-        GameState.init();
-    },
-};
+var Terminal = Terminal || {};
+Terminal.Main = (function(Terminal) {
+"use strict";
 
-$(function() {
-    Terminal.init();
-});
+(function () {
+    window.addEventListener("load", function() {
+        Terminal.Render.init();
+        Terminal.GameState.init();
+    });
+})();
+})(Terminal);

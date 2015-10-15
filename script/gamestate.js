@@ -1,36 +1,45 @@
-var GameState = {
-    init: function() {
-        this.money = 100;
-        this.cpu_level = 1;
-        this.ram_level = 1;
-        this.emails = [];
-        this.servers = [];
-        this.has_social_engineer = false;
-        this.has_developer = false;
+var Terminal = Terminal || {};
+Terminal.GameState = (function(Terminal) {
+"use strict";
 
-        // Set up some dummy data.
-        addServer = function() {
-            var server = new Server("TestServer");
-            GameState.servers.push(server);
-            Render.addServer(server);
-        }
-        var email = new Email("Subject", "Body", addServer);
-        this.emails.push(email);
-        Render.addEmail(email);
+var money = 100;
+var money = 100;
+var cpu_level = 1;
+var ram_level = 1;
+var emails = [];
+var servers = [];
+var has_social_engineer = false;
+var has_developer = false;
 
-        addGroup = function() {
-            var firewall = new Server("Firewall", true, false, null);
-            var server = new Server("MainServer", false, false, firewall);
-            var group = new ServerGroup("TestServerGroup", [firewall, server]);
-            GameState.servers.push(group);
-            Render.addServerGroup(group);
-        }
-        email = new Email("Subject 2", "Body 2", addGroup);
-        this.emails.push(email);
-        Render.addEmail(email);
-    },
+function update() {
+    money += 100;
+}
 
-    update: function() {
-        this.money += 100;
+function init() {
+    // Set up some dummy data.
+    var addServer = function() {
+        var server = new Server("TestServer");
+        servers.push(server);
+        Terminal.Render.addServer(server);
     }
+    var email = new Email("Subject", "Body", addServer);
+    emails.push(email);
+    Terminal.Render.addEmail(email);
+
+    var addGroup = function() {
+        var firewall = new Server("Firewall", true, false, null);
+        var server = new Server("MainServer", false, false, firewall);
+        var group = new ServerGroup("TestServerGroup", [firewall, server]);
+        servers.push(group);
+        Terminal.Render.addServerGroup(group);
+    }
+    email = new Email("Subject 2", "Body 2", addGroup);
+    emails.push(email);
+    Terminal.Render.addEmail(email);
+}
+
+return {
+    "init": init
 };
+
+})(Terminal);
