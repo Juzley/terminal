@@ -12,7 +12,7 @@ function Server(name, requires_hack, requires_password, firewall) {
             return;
         }
 
-        if (!self.firewall && self.filewall.accessed) {
+        if (!self.firewall && self.firewall.accessed) {
             // Have to disable the firewall first.
             return;
         }

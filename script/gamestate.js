@@ -20,25 +20,27 @@ function init() {
     var addServer = function() {
         var server = new Server("TestServer");
         servers.push(server);
-        Terminal.Render.addServer(server);
+        Terminal.Render.update();
     }
     var email = new Email("Subject", "Body", addServer);
     emails.push(email);
-    Terminal.Render.addEmail(email);
 
     var addGroup = function() {
         var firewall = new Server("Firewall", true, false, null);
         var server = new Server("MainServer", false, false, firewall);
         var group = new ServerGroup("TestServerGroup", [firewall, server]);
         servers.push(group);
-        Terminal.Render.addServerGroup(group);
+        Terminal.Render.update();
     }
     email = new Email("Subject 2", "Body 2", addGroup);
     emails.push(email);
-    Terminal.Render.addEmail(email);
+
+    Terminal.Render.update();
 }
 
 return {
+    "emails": emails,
+    "servers": servers,
     "init": init
 };
 
