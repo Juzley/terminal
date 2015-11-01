@@ -15,7 +15,7 @@ function update() {
             return function() {
                 _email.onRead();
                 $('.emailbody', _item).toggle();
-                $('.emailsubject', _item).removeClass('unread')
+                $('.emailsubject', _item).removeClass('unread');
             }
         }(email, emailItem);
 
@@ -35,11 +35,13 @@ function update() {
     $('#serverlist').empty();
     var servers = Terminal.GameState.servers;
     for (var i = 0; i < servers.length; i++) {
-        if (servers[i] instanceof ServerGroup) {
+        if (servers[i] instanceof Terminal.ServerGroup) {
             var group = servers[i];
             var toggleVis = function (_group) {
-                return function() {
-                    $('#' + _group.name + ' div.servers').toggle();
+                return function(e) {
+                    if (this === e.target) {
+                        $('#' + _group.name + ' ul.servers').toggle();
+                    }
                 }
             }(group);
 
@@ -49,24 +51,36 @@ function update() {
                     .text(group.name)
                     .click(toggleVis)
                     .appendTo('#serverlist');
-            var serversDiv = $('<div>')
-                            .addClass('servers')
-                            .attr('style', 'display: none')
-                            .appendTo(groupItem);
+            var serversList = $('<ul>')
+                .addClass('servers')
+                .attr('style', 'display: none')
+                .appendTo(groupItem);
     
-            for (var j = 0; j < group.servers.length; i++) {
-                var server = group.servers[i];
-                $('<div>')
+            for (var j = 0; j < group.servers.length; j++) {
+                var server = group.servers[j];
+                var accessServer = function(_server) {
+                    return function() {
+                        _server.onAccess();
+                    }
+                }(server);
+
+                $('<li>')
                     .addClass('server')
                     .text(server.name)
-                    .click(server.onAccess)
-                    .appendTo(serversDiv);
+                    .click(accessServer)
+                    .appendTo(serversList);
             }
         } else {
+            var accessServer = function(_server) {
+                return function() {
+                    _server.onAccess();
+                }
+            }(servers[i]);
+
             $('<li>')
                 .addClass('server')
                 .text(servers[i].name)
-                .click(servers[i].onAccess)
+                .click(accessServer)
                 .appendTo('#serverlist');
         }
     }

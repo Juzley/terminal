@@ -1,15 +1,16 @@
-function Email(subject, body, onRead) {
+var Terminal = Terminal || {};
+Terminal.Email = function(subject, body, onRead) {
     this.subject = subject || "";
     this.body = body || "";
     this.read = false;
+    this.onRead = onRead || null;
+}
 
-    var self = this;
-    this.onRead = function() {
-        if (!self.read) {
-            self.read = true;
-            if (onRead) {
-                onRead();
-            }
+Terminal.Email.prototype.onRead = function() {
+    if (!this.read) {
+        this.read = true;
+        if (this.onRead !== null) {
+            this.onRead();
         }
     }
 };

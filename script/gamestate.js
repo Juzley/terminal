@@ -18,21 +18,21 @@ function update() {
 function init() {
     // Set up some dummy data.
     var addServer = function() {
-        var server = new Server("TestServer");
+        var server = new Terminal.Server("TestServer");
         servers.push(server);
         Terminal.Render.update();
     }
-    var email = new Email("Subject", "Body", addServer);
+    var email = new Terminal.Email("Subject", "Body", addServer);
     emails.push(email);
 
     var addGroup = function() {
-        var firewall = new Server("Firewall", true, false, null);
-        var server = new Server("MainServer", false, false, firewall);
-        var group = new ServerGroup("TestServerGroup", [firewall, server]);
+        var firewall = new Terminal.Server("Firewall", true, false, null);
+        var server = new Terminal.Server("MainServer", false, false, firewall);
+        var group = new Terminal.ServerGroup("TestServerGroup", [firewall, server]);
         servers.push(group);
         Terminal.Render.update();
     }
-    email = new Email("Subject 2", "Body 2", addGroup);
+    email = new Terminal.Email("Subject 2", "Body 2", addGroup);
     emails.push(email);
 
     Terminal.Render.update();

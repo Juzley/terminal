@@ -1,35 +1,45 @@
-function Server(name, requires_hack, requires_password, firewall) {
+var Terminal = Terminal || {};
+Terminal.Server = function(name, requires_hack, requires_password, firewall) {
     this.name = name || "";
     this.accessed = false;
     this.requires_hack = requires_hack || false; 
     this.requires_password = requires_password || false;
     this.password_known = false;
     this.firewall = firewall || null;
+    this.hack_screen = null;
+}
 
-    var self = this;
-    this.onAccess = function() {
-        if (self.accessed) {
-            return;
-        }
+Terminal.Server.prototype.onAccess = function() {
+    if (this.accessed) {
+        return;
+    }
 
-        if (!self.firewall && self.firewall.accessed) {
-            // Have to disable the firewall first.
-            return;
-        }
+    if (this.firewall !== null && this.firewall.accessed) {
+        // Have to disable the firewall first.
+        return;
+    }
 
-        if (self.requires_password && !self.password_known) {
-            // Need a password that we don't have.
-            return;
-        }
+    if (this.requires_password && !this.password_known) {
+        // Need a password that we don't have.
+        return;
+    }
 
-        if (self.requires_hack) {
-            // Need to trigger the hacking screen.
-        }
+    if (this.requires_hack) {
+        // Need to trigger the hacking screen.
+        this.hack_screen = new Terminal.Hacks.PasswordGuess(this);
+        this.hack_screen.start();
+    }
+}
+
+Terminal.Server.prototype.onHack = function() {
+    if (this.requires_hack) {
+        this.requires_hack = false;
+        this.accessed = true;
     }
 }
 
 
-function ServerGroup(name, servers) {
+Terminal.ServerGroup = function(name, servers) {
     this.name = name || "";
     this.servers = servers || [];
 }
