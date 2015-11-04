@@ -14,8 +14,12 @@ Terminal.Server.prototype.onAccess = function() {
         return;
     }
 
-    if (this.firewall !== null && this.firewall.accessed) {
+    if (this.firewall !== null && !this.firewall.accessed) {
         // Have to disable the firewall first.
+        $('.popup').empty().show()
+            .append($('<p>').text('@@@Firewall Text@@@'))
+            .append($('<a>')
+                .text('OK').click(function() { $('.popup').hide() }));
         return;
     }
 

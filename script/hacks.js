@@ -15,11 +15,34 @@ PasswordGuess.prototype.getGuessText = function() {
 }
 
 PasswordGuess.prototype.guess = function(guess, listitem) {
+    this.guesses++;
+
     if (this.password === guess) {
-        this.server.onHack();
+        var progress = function(_obj) {
+            return function() {
+                $('.popup').hide();
+                _obj.server.onHack();
+            }
+        }(this);
+
+        $('.popup')
+            .empty()
+            .append($('<p>').text('@@@Success Text@@@'))
+            .append($('<a>').click(progress).text('OK'));
+    } else if (this.guesses === this.maxGuesses) {
+        var progress = function(_obj) {
+            return function() {
+                $('.popup').hide();
+                // @@@ TODO: should prob be some penalty here.
+            }
+        }(this);
+
+        $('.popup')
+            .empty()
+            .append($('<p>').text('@@@Failure Text@@@'))
+            .append($('<a>').click(progress).text('OK'));
     } else {
         // The guess isn't correct - display the number of correct letters.
-        this.guesses++;
         var numCorrect = 0;
         for (var i = 0; i < guess.length && i < this.password.length; i++) {
             if (guess[i] === this.password[i]) {
@@ -27,12 +50,13 @@ PasswordGuess.prototype.guess = function(guess, listitem) {
             }
         }
 
-        $('#guessresult').show().text(numCorrect + ' characters correct');
+        $('#guessresult').show().text(
+            guess + ": " + numCorrect + ' characters correct');
         $('#guesscount').text(this.getGuessText());
     }
 }
 
-PasswordGuess.prototype.start = function() {
+PasswordGuess.prototype.startHack = function() {
     $('.popup')
         .empty()
         .append($('<h2>')
@@ -49,14 +73,28 @@ PasswordGuess.prototype.start = function() {
             .text(this.words[i])
             .appendTo(wordList);
 
-        var guess = function(obj, _word, _listitem) {
+        var guess = function(_obj, _word, _listitem) {
             return function() {
-                obj.guess(_word, _listitem);
+                _obj.guess(_word, _listitem);
             }
         }(this, this.words[i], li);
 
         li.click(guess);
     }
+}
+
+PasswordGuess.prototype.start = function() {
+    var progress = function(_obj) {
+        return function() {
+            _obj.startHack();
+        }
+    }(this);
+
+    $('.popup')
+        .empty()
+        .show()
+        .append($('<p>').text('@@@Text explaining the hack@@@'))
+        .append($('<a>').click(progress).text('OK'));
 }
 
 return {

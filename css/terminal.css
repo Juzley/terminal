@@ -1,0 +1,10 @@
+div.popup {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    background: white;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    padding: 10px;
+}
