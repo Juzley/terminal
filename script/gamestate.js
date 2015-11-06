@@ -3,9 +3,9 @@ Terminal.GameState = (function(Terminal) {
 "use strict";
 
 var money = 100;
-var money = 100;
-var cpu_level = 1;
-var ram_level = 1;
+var cpu = 1;
+var ram = 1;
+var zombies = 0;
 var emails = [];
 var servers = [];
 var has_social_engineer = false;
@@ -39,6 +39,9 @@ function init() {
 }
 
 return {
+    "money": money,
+    "cpu": cpu,
+    "ram": ram,
     "emails": emails,
     "servers": servers,
     "init": init

@@ -2,13 +2,13 @@ var Terminal = Terminal || {};
 Terminal.Email = function(subject, body, onRead) {
     this.subject = subject || "";
     this.body = body || "";
-    this.read = false;
+    this.unread = true;
     this.onRead = onRead || null;
 }
 
-Terminal.Email.prototype.onRead = function() {
-    if (!this.read) {
-        this.read = true;
+Terminal.Email.prototype.read = function() {
+    if (this.unread) {
+        this.unread = false;
         if (this.onRead !== null) {
             this.onRead();
         }

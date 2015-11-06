@@ -3,6 +3,11 @@ Terminal.Render = (function(Terminal, $) {
 "use strict";
 
 function update() {
+    $('#money').html('$' + Terminal.GameState.money);
+    $('#cpu').html(Terminal.GameState.cpu + ' core' +
+                   (Terminal.GameState.cpu > 1 ? 's' : ''));
+    $('#ram').html(Terminal.GameState.ram + ' gb');
+
     $('#emaillist').empty();
     var emails = Terminal.GameState.emails;
     for (var i = 0; i < emails.length; i++) {
@@ -13,7 +18,7 @@ function update() {
 
         var onClick = function(_email, _item) {
             return function() {
-                _email.onRead();
+                _email.read();
                 $('.emailbody', _item).toggle();
                 $('.emailsubject', _item).removeClass('unread');
             }
@@ -28,7 +33,7 @@ function update() {
         $('<div>')
             .addClass('emailbody')
             .text(email.body)
-            .attr('style', 'display: none')
+            //.attr('style', 'display: none')
             .appendTo(emailItem);
     }
 
