@@ -40,6 +40,12 @@ function addEmail(subject, body, onRead) {
 function addServer(server) {
     servers.push(server);
 
+    var makeAccessHandler = function(_server) {
+        return function() {
+            _server.onAccess();
+        };
+    };
+
     if (server instanceof Terminal.ServerGroup) {
         var toggleVis = function(ev) {
             if (this === ev.target) {
@@ -60,27 +66,17 @@ function addServer(server) {
 
         for (var i = 0; i < server.servers.length; i++) {
             var child = server.servers[i];
-            var accessChild = function(_server) {
-                return function() {
-                    _server.onAccess();
-                };
-            }(child);
-
             $('<li>')
                 .addClass('server')
                 .text(child.name)
-                .click(accessChild)
+                .click(makeAccessHandler(child))
                 .appendTo(children);
         }
     } else {
-        var accessServer = function() {
-            server.onAccess();
-        };
-
         $('<li>')
             .addClass('server')
             .text(server.name)
-            .click(accessServer)
+            .click(makeAccessHandler(server))
             .appendTo('#serverlist');
     }
 }

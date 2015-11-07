@@ -68,18 +68,16 @@ PasswordGuess.prototype.startHack = function() {
     var wordList = $('<ul>')
         .attr('id', 'words')
         .appendTo('.popup');
+    var makeGuessHandler = function(_obj, _word) {
+        return function() {
+            _obj.guess(_word, this);
+        };
+    };
     for (var i = 0; i < this.words.length; i++) {
         var li = $('<li>')
             .text(this.words[i])
-            .appendTo(wordList);
-
-        var guess = function(_obj, _word, _listitem) {
-            return function() {
-                _obj.guess(_word, _listitem);
-            };
-        }(this, this.words[i], li);
-
-        li.click(guess);
+            .appendTo(wordList)
+            .click(makeGuessHandler(this, this.words[i]));
     }
 };
 
