@@ -22,7 +22,7 @@ function addEmail(subject, body, onRead) {
         }
         $('.emailbody', item).toggle();
         $('.emailsubject', item).removeClass('unread');
-    }
+    };
 
     $('<div>')
         .addClass('emailsubject')
@@ -45,7 +45,7 @@ function addServer(server) {
             if (this === ev.target) {
                 $('#' + server.name + ' ul.servers').toggle();
             }
-        }
+        };
 
         var item = $('<li>')
             .addClass('servergroup')
@@ -60,27 +60,27 @@ function addServer(server) {
 
         for (var i = 0; i < server.servers.length; i++) {
             var child = server.servers[i];
-            var access = function(_server) {
+            var accessChild = function(_server) {
                 return function() {
                     _server.onAccess();
-                }
+                };
             }(child);
 
             $('<li>')
                 .addClass('server')
                 .text(child.name)
-                .click(access)
+                .click(accessChild)
                 .appendTo(children);
         }
     } else {
-        var access = function() {
+        var accessServer = function() {
             server.onAccess();
-        }
+        };
 
         $('<li>')
             .addClass('server')
             .text(server.name)
-            .click(access)
+            .click(accessServer)
             .appendTo('#serverlist');
     }
 }
