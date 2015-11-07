@@ -4,7 +4,6 @@ Terminal.Main = (function(Terminal) {
 
 (function () {
     window.addEventListener("load", function() {
-        Terminal.Render.init();
         Terminal.GameState.init();
     });
 })();

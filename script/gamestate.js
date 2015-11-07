@@ -17,7 +17,9 @@ function update() {
 function addEmail(subject, body, onRead) {
     var item = $('<li>').addClass('email').appendTo('#emaillist');
     var onClick = function() {
-        onRead();
+        if ($('.emailsubject', item).hasClass('unread')) {
+            onRead();
+        }
         $('.emailbody', item).toggle();
         $('.emailsubject', item).removeClass('unread');
     }
@@ -35,36 +37,70 @@ function addEmail(subject, body, onRead) {
         .appendTo(item);
 }
 
+function addServer(server) {
+    servers.push(server);
+
+    if (server instanceof Terminal.ServerGroup) {
+        var toggleVis = function(ev) {
+            if (this === ev.target) {
+                $('#' + server.name + ' ul.servers').toggle();
+            }
+        }
+
+        var item = $('<li>')
+            .addClass('servergroup')
+            .attr('id', server.name)
+            .text(server.name)
+            .click(toggleVis)
+            .appendTo('#serverlist');
+        var children = $('<ul>')
+            .addClass('servers')
+            .attr('style', 'display: none')
+            .appendTo(item);
+
+        for (var i = 0; i < server.servers.length; i++) {
+            var child = server.servers[i];
+            var access = function(_server) {
+                return function() {
+                    _server.onAccess();
+                }
+            }(child);
+
+            $('<li>')
+                .addClass('server')
+                .text(child.name)
+                .click(access)
+                .appendTo(children);
+        }
+    } else {
+        var access = function() {
+            server.onAccess();
+        }
+
+        $('<li>')
+            .addClass('server')
+            .text(server.name)
+            .click(access)
+            .appendTo('#serverlist');
+    }
+}
+
 function init() {
     $('#money').html('$' + money);
     $('#cpu').html(cpu + ' core' + (cpu > 1 ? 's' : ''));
     $('#ram').html(ram + ' gb');
 
-    // Set up some dummy data.
-    var addServer = function() {
-        var server = new Terminal.Server("TestServer");
-        servers.push(server);
-        Terminal.Render.update();
-    }
-    addEmail("@@@Introduction@@@",
-             "@@@This email will introduce the player to the game," +
-             " and potentially add the first server?@@@",
-             addServer);
-    
-    var addGroup = function() {
-        var firewall = new Terminal.Server("Firewall", true, false, null);
-        var server = new Terminal.Server("MainServer", false, false, firewall);
-        var group = new Terminal.ServerGroup("TestServerGroup", [firewall, server]);
-        servers.push(group);
-        Terminal.Render.update();
-    }
-    addEmail("@@@Server Group@@@",
-             "@@@This email adds a server group@@@",
-             addGroup);
+    addEmail(Terminal.Email.intro.subject,
+             Terminal.Email.intro.body,
+             Terminal.Email.intro.onRead);
+    addEmail(Terminal.Email.group.subject,
+             Terminal.Email.group.body,
+             Terminal.Email.group.onRead);
 }
 
 return {
-    "servers": servers,
+    "addEmail": addEmail,
+    "addServer": addServer,
     "init": init
 };
 

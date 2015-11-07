@@ -1,16 +1,23 @@
 var Terminal = Terminal || {};
-Terminal.Email = function(subject, body, onRead) {
-    this.subject = subject || "";
-    this.body = body || "";
-    this.unread = true;
-    this.onRead = onRead || null;
-}
-
-Terminal.Email.prototype.read = function() {
-    if (this.unread) {
-        this.unread = false;
-        if (this.onRead !== null) {
-            this.onRead();
+Terminal.Email = {
+    intro: {
+        subject: "Introduction email",
+        body: "This email will introduce the player to the game",
+        onRead: function() {
+            Terminal.GameState.addServer(new Terminal.Server("TestServer"));
         }
-    }
+    },
+
+    group: {
+        subject: "Server group email",
+        body: "This email adds a server group",
+        onRead: function() {
+            var firewall = new Terminal.Server("Firewall", true, false, null);
+            var server = new Terminal.Server(
+                                    "MainServer", false, false, firewall);
+            var group = new Terminal.ServerGroup(
+                                    "TestServerGroup", [firewall, server]);
+            Terminal.GameState.addServer(group);
+        }
+    },
 };
