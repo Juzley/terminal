@@ -8,10 +8,11 @@ var ram = 1;
 var zombies = 0;
 var servers = [];
 var has_social_engineer = false;
-var has_developer = false;
+var has_software_engineer = false;
+var turns = 0;
 
 function update() {
-    money += 100;
+    turns++;
 }
 
 function addEmail(subject, body, onRead) {
@@ -97,7 +98,8 @@ function init() {
 return {
     "addEmail": addEmail,
     "addServer": addServer,
-    "init": init
+    "update": update,
+    "init": init,
 };
 
 })(Terminal);

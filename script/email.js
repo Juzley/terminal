@@ -12,9 +12,10 @@ Terminal.Email = {
         subject: "Server group email",
         body: "This email adds a server group",
         onRead: function() {
-            var firewall = new Terminal.Server("Firewall", true, false, null);
+            var firewall = new Terminal.Server(
+                                    "Firewall", { requires_hack: true });
             var server = new Terminal.Server(
-                                    "MainServer", false, false, firewall);
+                                    "MainServer", { firewall: firewall });
             var group = new Terminal.ServerGroup(
                                     "TestServerGroup", [firewall, server]);
             Terminal.GameState.addServer(group);

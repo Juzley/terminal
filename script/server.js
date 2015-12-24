@@ -1,12 +1,23 @@
 var Terminal = Terminal || {};
-Terminal.Server = function(name, requires_hack, requires_password, firewall) {
+Terminal.Server = function(name, options) {
     this.name = name || "";
     this.accessed = false;
-    this.requires_hack = requires_hack || false; 
-    this.requires_password = requires_password || false;
-    this.password_known = false;
-    this.firewall = firewall || null;
     this.hack_screen = null;
+    this.password_known = false;
+
+    options = options || {};
+    
+    this.requires_hack = 'requires_hack' in options ?
+        options['requires_hack'] : false;
+
+    this.requires_password = 'requires_password' in options ?
+        options['requires_password'] : false;
+
+    this.requires_social_engineer = 'requires_social_engineer' in options ?
+        options['requires_social_engineer'] : false;
+
+    this.firewall = 'firewall' in options ?
+        options['firewall'] : null;
 };
 
 Terminal.Server.prototype.onAccess = function() {
@@ -20,6 +31,11 @@ Terminal.Server.prototype.onAccess = function() {
             .append($('<p>').text('@@@Firewall Text@@@'))
             .append($('<a>')
                 .text('OK').click(function() { $('.popup').hide(); }));
+        return;
+    }
+
+    if (this.requires_social_engineer && !this.password_known) {
+        // Need the social engineer to get the password
         return;
     }
 
