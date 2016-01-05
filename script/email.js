@@ -8,6 +8,14 @@ Terminal.Email = {
         }
     },
 
+    software_engineer: {
+        subject: "Software Engineer email",
+        body: "This email will introduce the software engineer",
+        onRead: function() {
+            Terminal.GameState.addSoftwareEngineer();
+        }
+    },
+
     group: {
         subject: "Server group email",
         body: "This email adds a server group",

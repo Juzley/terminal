@@ -15,6 +15,10 @@ function update() {
     turns++;
 }
 
+function addSoftwareEngineer() {
+    has_software_engineer = true;
+}
+
 function addEmail(subject, body, onRead) {
     var item = $('<li>').addClass('email').appendTo('#emaillist');
     var onClick = function() {
@@ -98,6 +102,7 @@ function init() {
 return {
     "addEmail": addEmail,
     "addServer": addServer,
+    "addSoftwareEngineer": addSoftwareEngineer,
     "update": update,
     "init": init,
 };
